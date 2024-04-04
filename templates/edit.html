@@ -1,0 +1,41 @@
+
+
+           
+<html><head>
+    <title>welcome</title>
+</head>
+<body bgcolor="pink">
+    <h2>edit message</h2>
+    {% for x in data %}
+    <form method="POST" target="_blank">
+        {% csrf_token %}
+        <table border="1" align="center">
+            <tr>
+                <td>Enter name:</td>
+                <td><Input type="text" name="uname" placeholder="Enter name" value="{{x.name}}"></td>
+            </tr>
+
+            <tr>
+                <td>Enter email: </td>
+                <td><input type="text" name="uemail" placeholder="enter email"  value="{{x.email}}"></td> 
+            </tr>
+
+           
+            <tr>
+                <td>Mobile:</td>
+                <td><input type="number" name="umob" placeholder="sender mobno" value="{{x.mobile}}"></td>
+            </tr>
+               
+            <tr>
+                <td><label for="1"> gender:</label></td>
+                <td><input type="radio" name="Male" id="1" value="male"/>Male<input type="radio" name="male" id="1" value="{{x.gender}}"/>Female</td>
+            </tr>
+
+                <tr>
+                    <td><input type="submit" value="Update"></td>
+                </tr>
+        </table>
+    </form>
+    {% endfor %}
+</body>
+</html>

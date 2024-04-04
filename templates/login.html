@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="static/static/css/bootstrap.min.css">
+    
+</head>
+<body >
+    
+    <script src="static/static/js/bootstrap.min.js"></script>
+    <script src="static/static/js/popper.js"></script>
+    <br><br>
+   <!--<div class="container-sm box"></div> -->
+    <div class="container ">
+        <div class="row mt-5" >
+            <div class="col-md-4 mt-5 mx-auto shadow bg-info-subtle border border-black">
+                <h2 class="mb-5 text-center"> UserLogin</h2>
+                {% if errormsg %}
+                 <div class="alert alert-danger">
+                    {{errormsg}}
+                 </div>
+                 {% endif %}
+                <form method="POST" action="">
+                    {% csrf_token %}
+                   <!--<div class="mb-3">
+                        <label for="Input1" class="form-label"><strong>Name</strong></label>
+                        <input type="text" class="form-control" id="Input1" name="uname" placeholder="Name">
+                    </div>-->
+                    <div class="mb-3 bg-primary">
+                        <label for="Input2" class="form-label"><strong>username</strong></label>
+                        <input type="text,number,email" class="form-control" id="Input2" name="uname" placeholder="username,mobileno,email">
+                    </div>
+                    <div class="mb-3 bg-warning">
+                        <label for="Input2" class="form-label"><strong> password</strong></label>
+                        <input type="password" class="form-control" id="Input3" name="upass" placeholder="password">
+                    </div>
+                    <div class="mb-3 text-center">
+                        <button type="submit" class="btn btn-danger">login</button>
+                        New user?<a href="/register" text-decoration>register</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

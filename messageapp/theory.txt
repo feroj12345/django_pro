@@ -1,0 +1,396 @@
+MVT:
+model- table in db
+view- logic
+template-front end html
+
+CRUD
+c- Insert records into db
+R- Read data from db
+u- update data in db
+d- delete data from db
+
+form ===> views.py ===>model  
+                   insert      data stored in db
+
+
+CSRF token:  cross Site Request Forgery Protection
+
+form data must be send along with token generated 
+automatically.
+
+CSRF mechanism:
+1. when {% csrf_token %} is added in the form, a 
+csrf token is generated in the form & the same time 
+that same csrf token is stored in the system by
+django.
+
+2. when form is submitted with data, this csrf token is 
+   also submitted.
+
+3. before form data is being inserted into database,
+   that form data needs to pass through csrf middleware. 
+
+role of csrf middleware:
+
+csrf token received     =    csrf token stored in the
+from form                    cookies by django 
+
+if above condition is True then only middleware allows
+you to move further to views.py function.
+else your POST request is aborted or fobidden.
+======================================================
+Request object
+
+all data of the request coming from client is handled by 
+request object.
+
+class student():
+   rno=12;
+   name="it"
+
+s=student()
+s.rno
+s.name
+
+data member 'method' in request object that 
+contains type of request.
+
+types of requests:  GET , POST
+
+If the request is GET then request.method value is GET
+If the request is POST then request.method value is POST
+
+if method is GET then display empty form.
+if method is POST then display message as 
+" insert data from the form into database."
+fetch record into views.py file:
+
+when form is submitted all keys and their values are 
+stored in pre defined dictionary which is called as
+"POST" in request object.so that values assigned to the keys
+send by form can be fetched in the backend or server side.
+
+If we want to retrieve name :
+
+request.POST['uname']
+request.POST['uemail']
+request.POST['umob']
+=======================================================
+Insert record into database:
+
+step 1: create database.  eg:message
+step 2: database setting in settings.py file
+
+when server runs, settings.py file is executed and 
+django tries to connect with the database mentioned 
+in the database setting.
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'Name':'message',
+        'HOST':'localhost',
+        'USER':'root',
+        'Password':'',
+        'Port':'3306',
+    }
+}
+
+to install mysqlclient give command as:
+
+    pip install mysqlclient
+===================================================
+create table that is defining models:
+
+model==> tables in db
+
+database name: message
+table name: message
+
+id    name  email      mobile   msg
+1     abc   abc@g.com   66666   test msg
+
+model is "class" defined in models.py file in application
+folder.
+
+syntax of defining class:
+
+ class classname:              class stud:
+     data members                   name="itvedant"
+     functions                      rno=12
+                                    def disp(self):
+                                        print(name)
+
+                                     s=stud()
+                                     s.disp()
+By convention put first letter of classname as capital
+    
+1. table name is equal to class name in model  
+
+     classname = tablename
+
+     class Msg(models.Model):
+
+     any model class defined must be inherited 
+     from Model class which is inside models module.
+
+     tablename= applicationname_tablename
+      eg:
+              messageapp_msg
+=====================================================
+2. columns in the table are data members in class Model.
+   class Msg(models.Model):
+        id=
+        name=
+        email=
+======================================================
+3. Datatypes of column:
+ there are inbuilt functons in models module that are used
+ to assign data type to data members.
+
+ Datatypes          function in models module
+ varchar(length)  models.Charfield(max_length=n)
+ int              models.Integerfield()
+ float            models.Floatfield()
+ email            models.Emailfield()
+
+ framework automatically takes id so no need to define it.
+
+ class Msg(models.Model):
+       name=models.Charfield(max_length=50)
+       email=models.Charfield(max_length=50)
+       mobile=models.BigIntfield()
+       msg=models.Charfield(max_length=200)
+======================================================
+
+step 2: Migration
+
+model class defined in models.py file need to be migrated 
+from models.py to DBMS (in database)
+
+create migration:
+     python manage.py makemigrations
+
+on execution of above command a migration file containing
+the code to create table in the database is automatically 
+created on applications migration folder.
+========================================================
+
+migrate migration created in application
+
+python manage.py migrate
+=========================================
+Insert reccord into db table:
+ORM 
+- Object Relational Mapping
+- used to insert data
+syntax:
+
+step1:
+variablename=Modelname.objects.create(col1=value1,
+            col2=value2,......coln=valuen)
+e.g.
+m= Msg.objects.create(name=n,email=em,mobile=mob,
+   msg=msg)
+
+when ORM query is executed a row is inserted into table.
+row in the table is called as object in model.
+
+step 2: m.save()
+
+now model is there in models.py file & not there in views.py
+
+in views.py file:-
+from messageapp.models import Msg
+========================================================
+
+Dashboard:
+It is a web page in application where user can have 
+all functionalities control.
+
+eg: where user can:
+1. view all messages that he had send.
+2. edit message
+3. delete a message
+4. link to create or send message.
+
+db==>table==>inserted data==>views.py===>diplay in html
+
+retrieve data from database table into views.py file and 
+present on html file.
+
+fetch records from table:
+sql query: select * from tablename;
+
+ORM query to retrieve data:
+   Modelname.objects.all()
+e.g.
+   m=Msg.objects.all()
+
+this query returns list of queryset which 
+contains objects.
+===============================================
+delete
+
+step 1: fetch object or row to be deleted
+        m=Modelename.objects.filter(id=rid)
+
+step 2: detele that record
+        m.delete()
+====================================================
+edit
+
+edit operation:
+1. show old data to user.
+   when user click on the edit link application must 
+   show user previous data filled in the form.
+
+step1: fetch data from the db based on the edit id
+      m= Modlename.objects.filter(id=rid)
+
+step2: record fetched for editing must be shown to user
+      by sending that fetched record to html or browser 
+      or template.
+Note: data from views to html file is always send to dictionary.
+
+
+
+for update the record:
+
+
+
+
+
+
+
+run: pytest
+============================================================
+DTL
+reusability of code
+
+Structure of html file
+
+header
+
+main
+
+footer
+
+header       footer
+|               |
+                |
+|               |
+=======|==========
+base.html
+
+cart prode_de about
+
+
+for update the record
+=================================
+user model
+ in built auth application, contains user model.
+ -that is used to stroed register user information  for this application.
+
+
+
+
+
+ session:
+ is piece of code which stored on server side.
+ -data stored in the session can be accessed anywhere in application.
+ -is dictionary that store data in the form of key and value.
+ -data is seecured.
+ in django data from session is stored in the db table known as django_session.
+
+ login(request,u)
+
+ login() start session and store  id  of authenticated user from auth_user table in session.
+
+ =============================
+
+
+reuqest.user.id
+
+to check wether user authenticated or not in views.py file
+
+
+request.user.is_authenticated
+is boolean function
+
+
+in html file==>{% user.is_authenticated %} i will return true if user is login and will return false if user is logout
+
+                                             16-01-2024
+=========================
+create product model
+
+id           name      price                 cat                      pdetail                 is_active
+                                              1=>mobile
+                                              2=>shoes
+                                              3=>cloths
+Register  model in admin panel
+
+step:1 open admin.py file from application.
+step2: register your model by using 
+eg:
+admin.site.register(Product)
+
+
+===================================
+add all fields of product
+to do customization in admin panel
+
+1.show all model columns in admin panel
+2.to show filters for categorical data columns
+============================================
+change column name 
+eg: pdetails===> product details
+    cat====> category
+
+========================
+
+lookups==> are inbuilt class which is there in the Q class 
+              in django.bd.models
+ 
+ use to dill with two condition
+
+ c1=Q(contion)
+ c2=Q(contion)
+
+ Modelname.objects.filter(c1 & c2)
+ logocal and in django ORM =>&
+          NOT             ==> |
+
+
+          sorting in ORM :
+          Modelname.objects.order_by('column) ==> acs
+          Modelname.objects.order_by('-column) ==> desc
+
+          if sv=='0':
+            col='price'
+         else
+         col='-price'
+         modelname.objects.order_by('col')
+
+
+         less than ` 5000 price<5000            price__lt = 5000
+
+
+         less than or       price <= 5000       pricelte = 5000 
+         equal to 
+
+         greater than     price>2000            price__gt = 2000
+
+                           price>=2000            price__gte = 2000
+
+
+
+
+
+pillow===> pip install pillow
+it is used to upload image
+
+
+my superuser name=itvedant@123    password=95458077
+         
